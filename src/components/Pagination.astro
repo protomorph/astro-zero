@@ -4,21 +4,18 @@ import type { HTMLAttributes } from 'astro/types'
 import type { Page } from 'astro'
 
 interface Props extends HTMLAttributes<'nav'> {
-  attr: Record<string, any>
+  attr?: Record<string, any>
 	page: Page<CollectionEntry<'posts'>>
 }
 
 const {
   page,
   ...attr
-} = Astro.props as Props
+} = Astro.props
 ---
 
 <nav
-  aria-labelledby="
-    pagination-label
-    pagination-page
-  "
+  aria-labelledby="pagination-label pagination-page"
   {...attr}
 >
   <h2
