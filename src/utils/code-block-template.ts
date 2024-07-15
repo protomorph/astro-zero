@@ -3,7 +3,7 @@ export const codeBlockTemplate = (
   classLanguage: string,
   html: string,
   lang: string,
-  meta: string
+  meta: string | undefined
 ) => `<figure class="code-block">
   <figcaption class="code-block__header">
     ${!! lang ? `<span class="code-block__lang">${lang}</span>` : ''}
