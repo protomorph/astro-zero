@@ -100,7 +100,7 @@ const {
     <ul>
       {
         tagged.length > 0 ? tagged.map(
-          ({ href, name }) => (
+          ({ href, name }: { href: string, name: string }) => (
             <li><a href={href}>#{name}</a></li>
           )
         ) : (
@@ -111,7 +111,7 @@ const {
 
     <ShareLinks
       title={title}
-      url={Astro.url}
+      url={Astro.request.url}
     />
   </article>
 
