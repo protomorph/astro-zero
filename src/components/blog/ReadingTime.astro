@@ -4,9 +4,8 @@ import type { HTMLAttributes } from 'astro/types'
 import { readingTime } from '@utils/reading-time'
 
 interface Props extends HTMLAttributes<'span'> {
-  attr: Record<string, any>
   body: string
-  text: string
+  text?: string
 }
 
 const {
@@ -16,7 +15,7 @@ const {
 } = Astro.props as Props
 
 const count = readingTime(body)
-const value = text.replace(/{count}/, count)
+const value = text.replace(/{count}/, `${count}`)
 ---
 
 <span
