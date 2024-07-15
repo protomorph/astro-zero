@@ -6,7 +6,7 @@ import SearchForm from '@components/SearchForm.astro'
 
 const { pathname } = new URL(Astro.request.url)
 
-const ariaCurrent = (href) => {
+const ariaCurrent = (href: string) => {
   const current = pathname.slice(1)
   return current === href.slice(1) ? 'page' : false
 }
