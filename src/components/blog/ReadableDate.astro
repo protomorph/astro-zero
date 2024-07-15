@@ -4,9 +4,9 @@ import type { HTMLAttributes } from 'astro/types'
 import { isoDate, readableDateLong, readableDateShort } from '@utils/date'
 
 interface Props extends HTMLAttributes<'time'> {
-  attr: Record<string, any>
-  date: Date
-  type: 'long' | 'short'
+  attr?: Record<string, any>
+  date: Date | any
+  type?: 'long' | 'short'
 }
 
 const {
