@@ -1,11 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 
-import type { CategoryItem, TagItem } from '@scripts/posts'
+import type { CategoryItem, TagItem } from '@utils/posts'
 
 interface Props {
   page?: CollectionEntry<'posts'> | CategoryItem | TagItem | string
-  separator: string
+  separator?: string
 }
 
 type Crumb = {
@@ -26,7 +26,7 @@ const paths = pathname.split('/').filter(x => x) || []
 const crumbs = paths.map<Crumb>((path, i) => {
   let last = paths.length - 1 === i
   let href = `/${paths.slice(0, i + 1).join('/')}`
-  // ts-ignore
+  // @ts-ignore
   let text: string | false = last && (page?.data?.title || page?.name || page)
   let current: 'page' | false = pathname === href ? 'page' : false
 
