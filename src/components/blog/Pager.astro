@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'astro/types'
 import { hrefs } from '@utils/hrefs'
 
 interface Props extends HTMLAttributes<'nav'> {
-  attr: Record<string, any>
+  attr?: Record<string, any>
   next: CollectionEntry<'posts'> | null
   prev: CollectionEntry<'posts'> | null
 }
