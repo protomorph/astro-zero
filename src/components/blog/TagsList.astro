@@ -3,8 +3,8 @@ import type { HTMLAttributes } from 'astro/types'
 
 import { getPosts } from '@utils/posts'
 
-interface Props extends HTMLAttributes<'ul'> {
-  attr: Record<string, any>
+interface Props {
+  attr?: HTMLAttributes<'ul'>
   limit?: number
   title: string | false
 }
