@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPathsOptions, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
+import type { TagItem } from '@utils/posts'
 
 import { getPosts } from '@utils/posts'
 import { hrefs } from '@utils/hrefs'
@@ -13,6 +14,7 @@ import Pagination from '@components/Pagination.astro'
 import PostsLoop from '@components/blog/PostsLoop.astro'
 
 interface Props {
+  current: TagItem
 	page: Page<CollectionEntry<'posts'>>
 }
 
