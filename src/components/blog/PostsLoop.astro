@@ -5,12 +5,13 @@ import type { HTMLAttributes } from 'astro/types'
 import { Image } from 'astro:assets'
 
 import { hrefs } from '@utils/hrefs'
+import type { TagItem } from '@utils/posts'
 
 import ReadableDate from '@components/blog/ReadableDate.astro'
 import ReadingTime from '@components/blog/ReadingTime.astro'
 
 interface Props extends HTMLAttributes<'ul'> {
-  attr: Record<string, any>
+  attr?: Record<string, any>
   posts: CollectionEntry<'posts'>[]
 }
 
@@ -32,7 +33,7 @@ const {
               src={data.image}
               alt={data.title}
               inferSize={true}
-              loading=""
+              loading={null}
               style="height:auto;max-width:100%"
             />
           )
@@ -58,7 +59,7 @@ const {
         }
         <ul>
           {
-            data.tagged.map(({ href, name }) => (
+            data.tagged.map(({ href, name }: TagItem) => (
               <li><a href={href}>#{name}</a></li>
             ))
           }
