@@ -1,0 +1,48 @@
+---
+import { getPosts } from '@utils/posts'
+import { hrefs } from '@utils/hrefs'
+import { site } from '@src/site'
+
+import Base from '@layouts/Base.astro'
+
+import CategoriesList from '@components/blog/CategoriesList.astro'
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import PostsLoop from '@components/blog/PostsLoop.astro'
+import TagsList from '@components/blog/TagsList.astro'
+
+const { latest, featured } = await getPosts()
+const featuredPosts = featured(site.featuredPosts)
+const latestPosts = latest(site.latestPosts)
+---
+
+<Base>
+	{
+		site.featuredPosts && (
+			<header slot="before-main">
+				<h2>Featured Posts</h2>
+				<PostsLoop posts={featuredPosts} />
+			</header>
+		)
+	}
+
+	<Breadcrumbs slot="before-content" />
+
+	<h1>Astro</h1>
+
+	{
+		site.latestPosts && (
+			<h2>Latest Posts</h2>
+			<PostsLoop posts={latestPosts} />
+			<a href={hrefs.blog}>View All Posts</a>
+		)
+	}
+
+	<CategoriesList
+		limit={10}
+	/>
+
+	<TagsList
+		limit={15}
+		title="Tag Cloud"
+	/>
+</Base>

@@ -1,0 +1,28 @@
+---
+import { site } from '@src/site'
+
+const { subscribe } = site
+---
+
+{subscribe.show && (
+  <form
+    action={subscribe.action}
+    id="subscribe"
+  >
+    <fieldset>
+      <label
+        for="subscribe-email"
+      >{subscribe.label}</label>
+      <input
+        id="subscribe-email"
+        name={subscribe.name}
+        type="email"
+        placeholder={subscribe.placeholder}
+        required
+      />
+      <button
+        type="submit"
+      >{subscribe.button}</button>
+    </fieldset>
+  </form>
+)}

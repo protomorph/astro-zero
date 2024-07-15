@@ -1,0 +1,36 @@
+---
+import { hrefs } from '@utils/hrefs'
+
+interface Props {
+  button: string | false
+  label: string | false
+  placeholder: string | false
+}
+
+const {
+  button = 'Search',
+  label = 'Search Keywords',
+  placeholder = 'Search Keywords'
+} = Astro.props as Props
+---
+
+<form
+  action={hrefs.search}
+>
+  <search>
+    {label && (
+      <label
+        for="search-query"
+      >{label}</label>
+    )}
+    <input
+      id="search-query"
+      name="q"
+      placeholder={placeholder}
+      type="search"
+    />
+    {button && (
+      <button>{button}</button>
+    )}
+  </search>
+</form>

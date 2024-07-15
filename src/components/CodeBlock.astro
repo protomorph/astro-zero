@@ -1,0 +1,25 @@
+---
+import { runHighlighterWithAstro } from '@astrojs/prism/dist/highlighter'
+
+import { codeBlockTemplate } from '@utils/code-block-template'
+
+interface Props {
+  children?: any
+  code?: string
+  lang?: string
+  meta?: string
+}
+
+const {
+  code,
+  lang = 'plaintext',
+  meta,
+} = Astro.props as Props
+
+const slot = await Astro.slots.render('default')
+const codeString = (code || slot).trim()
+const { classLanguage, html } = runHighlighterWithAstro(lang, codeString)
+const template = codeBlockTemplate(classLanguage, html, lang, meta)
+---
+
+<Fragment set:html={template} />

@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import type { HTMLAttributes } from 'astro/types'
+import type { Page } from 'astro'
+
+interface Props extends HTMLAttributes<'nav'> {
+  attr: Record<string, any>
+	page: Page<CollectionEntry<'posts'>>
+}
+
+const {
+  page,
+  ...attr
+} = Astro.props as Props
+---
+
+<nav
+  aria-labelledby="
+    pagination-label
+    pagination-page
+  "
+  {...attr}
+>
+  <h2
+    class="sr-only"
+    id="pagination-label"
+  >Pagination</h2>
+  <ul>
+    {
+      page.url.prev && (
+        <li>
+          <a
+            href={page.url.prev}
+          >
+            <span>Previous</span>
+            <span>Page {page.currentPage - 1}</span>
+          </a>
+        </li>
+      )
+    }
+    <li>
+      <span
+        id="pagination-page"
+        aria-current="page"
+      >Page <b>{page.currentPage}</b> of {page.lastPage}</span>
+    </li>
+    {
+      page.url.next && (
+        <li>
+          <a
+            href={page.url.next}
+          >
+            <span>Next</span>
+            <span>Page {page.currentPage + 1}</span>
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>

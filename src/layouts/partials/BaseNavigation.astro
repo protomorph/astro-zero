@@ -1,0 +1,40 @@
+---
+import { hrefs } from '@utils/hrefs'
+import { navigation } from '@src/site'
+
+import SearchForm from '@components/SearchForm.astro'
+
+const { pathname } = new URL(Astro.request.url)
+
+const ariaCurrent = (href) => {
+  const current = pathname.slice(1)
+  return current === href.slice(1) ? 'page' : false
+}
+
+const notSearch = ! ariaCurrent(hrefs.search)
+---
+
+<nav
+  id="main-navigation"
+>
+  {
+    navigation.length > 0 && (
+      <ul>
+        {
+          navigation.map(({ href, title }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={ariaCurrent(href)}
+              >{title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    )
+  }
+
+  {notSearch && (
+    <SearchForm label={false} />
+  )}
+</nav>

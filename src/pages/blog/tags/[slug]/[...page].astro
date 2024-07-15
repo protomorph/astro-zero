@@ -1,0 +1,63 @@
+---
+import type { GetStaticPathsOptions, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+
+import { getPosts } from '@utils/posts'
+import { hrefs } from '@utils/hrefs'
+import { site } from '@src/site'
+
+import Base from '@layouts/Base.astro'
+
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import Pagination from '@components/Pagination.astro'
+import PostsLoop from '@components/blog/PostsLoop.astro'
+
+interface Props {
+	page: Page<CollectionEntry<'posts'>>
+}
+
+export async function getStaticPaths (
+  { paginate }: GetStaticPathsOptions
+) {
+	const { byTag, tags } = await getPosts()
+
+  return tags.flatMap(
+    (tag) => paginate(
+      byTag(tag.slug), {
+        params: {
+          slug: tag.slug
+        },
+        props: {
+          current: tag,
+        },
+        pageSize: site.perPage
+      }
+    )
+  )
+}
+
+const { current, page } = Astro.props as Props
+
+const params = Astro.params
+const posts = page.data
+---
+
+<Base
+  title={`Tag: ${current.name}`}
+  description={`All posts that are in "${current.name}"`}
+>
+  <Breadcrumbs
+    page={current}
+    slot="before-content"
+  />
+
+	<h1>Tag: "{current.name}"</h1>
+
+  <p>{current.count} post{current.count !== 1 && 's'} with this tag</p>
+
+  <PostsLoop {posts} />
+
+  <p><a href={hrefs.tags}>View all tags</a></p>
+
+	<Pagination {page} />
+</Base>

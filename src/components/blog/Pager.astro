@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import type { HTMLAttributes } from 'astro/types'
+
+import { hrefs } from '@utils/hrefs'
+
+interface Props extends HTMLAttributes<'nav'> {
+  attr: Record<string, any>
+  next: CollectionEntry<'posts'> | null
+  prev: CollectionEntry<'posts'> | null
+}
+
+const {
+  prev,
+  next,
+  ...attr
+} = Astro.props as Props
+---
+
+<nav
+  aria-labelledby="pager-label"
+  {...attr}
+>
+  <h2
+    class="sr-only"
+    id="pager-label"
+  >Other Posts</h2>
+  <ul>
+    {
+      prev && (
+        <li>
+          <a
+            href={hrefs.post(prev.slug)}
+          >
+            <span>Previous Post</span>
+            {
+              prev.data.title &&
+              <span>{prev.data.title}</span>
+            }
+          </a>
+        </li>
+      )
+    }
+    {
+      next && (
+        <li>
+          <a
+            href={hrefs.post(next.slug)}
+          >
+            <span>Next Post</span>
+            {
+              next.data.title &&
+              <span>{next.data.title}</span>
+            }
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>

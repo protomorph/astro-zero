@@ -1,0 +1,56 @@
+---
+import type { GetStaticPathsOptions, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+
+import { getPosts } from '@utils/posts'
+import { site } from '@src/site'
+
+import Base from '@layouts/Base.astro'
+
+import CategoriesList from '@components/blog/CategoriesList.astro'
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import Pagination from '@components/Pagination.astro'
+import PostsLoop from '@components/blog/PostsLoop.astro'
+import TagsList from '@components/blog/TagsList.astro'
+
+interface Props {
+	page: Page<CollectionEntry<'posts'>>
+}
+
+export async function getStaticPaths (
+	{ paginate }: GetStaticPathsOptions
+) {
+  const { posts } = await getPosts()
+
+	return paginate(posts, {
+		pageSize: site.perPage
+	})
+}
+
+const { page } = Astro.props as Props
+
+const posts = page.data
+const title = 'Blog'
+---
+
+<Base
+  {title}
+>
+  <Breadcrumbs
+		page={title}
+		slot="before-content"
+	/>
+
+	<h1>{title}</h1>
+
+  <PostsLoop {posts} />
+
+	<Pagination {page} />
+
+	<CategoriesList />
+
+	<TagsList
+		limit={20}
+		title="Popular Tags"
+	/>
+</Base>

@@ -1,0 +1,33 @@
+{
+  "name": "astro-zero",
+  "description": "A zero styling, bare-bones Astro starter template",
+  "author": "protomorph (https://github.com/protomorph/)",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "astro.config.ts",
+  "type": "module",
+  "keywords": [
+    "mdx",
+    "html",
+    "astro",
+    "markdown",
+    "typescript",
+    "static-site"
+  ],
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.7.0",
+    "@astrojs/mdx": "^3.1.2",
+    "@astrojs/rss": "^4.0.7",
+    "@astrojs/sitemap": "^3.1.6",
+    "astro": "^4.11.5",
+    "astro-auto-import": "^0.4.2",
+    "typescript": "^5.5.3"
+  }
+}

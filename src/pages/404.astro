@@ -1,0 +1,32 @@
+---
+import { hrefs } from '@utils/hrefs'
+
+import Base from '@layouts/Base.astro'
+
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+
+const title = '404: Not Found'
+const description = 'Page could not be found.'
+---
+
+<Base
+  {title}
+  {description}
+>
+	<Breadcrumbs
+    page={title}
+    slot="before-content"
+  />
+
+	<h1>{title}</h1>
+
+  <p>The page you are looking for couldn't be found</p>
+
+  <h2>Other pages</h2>
+
+	<p>
+    <a href={hrefs.home}>Home</a>
+    <a href={hrefs.blog}>Blog</a>
+    <a href={hrefs.search}>Search</a>
+  </p>
+</Base>

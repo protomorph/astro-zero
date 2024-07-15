@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import { getPosts } from '@utils/posts'
+
+interface Props extends HTMLAttributes<'ul'> {
+  attr: Record<string, any>
+  limit?: number
+  title: string | false
+}
+
+const {
+  limit,
+  title = 'Tags',
+  ...attr
+} = Astro.props as Props
+
+const { tags } = await getPosts()
+const list = [...tags].slice(0, limit ?? tags.length)
+---
+
+{title && <h2>{title}</h2>}
+
+<ul
+  {...attr}
+>
+  {
+    list.length > 0 ? list.map(({ count, href, name }) => (
+      <li><a href={href}>{name} ({count})</a></li>
+    )) : (
+      <li>No Tags</li>
+    )
+  }
+</ul>

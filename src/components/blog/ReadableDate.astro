@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import { isoDate, readableDateLong, readableDateShort } from '@utils/date'
+
+interface Props extends HTMLAttributes<'time'> {
+  attr: Record<string, any>
+  date: string
+  type: 'long' | 'short'
+}
+
+const {
+  date,
+  type = 'long',
+  ...attr
+} = Astro.props as Props
+
+const format = type === 'short'
+  ? readableDateShort
+  : readableDateLong
+---
+
+<time
+  datetime={isoDate(date)}
+  set:text={format(date)}
+  {...attr}
+/>

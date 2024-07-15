@@ -1,0 +1,69 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import type { HTMLAttributes } from 'astro/types'
+
+import { Image } from 'astro:assets'
+
+import { hrefs } from '@utils/hrefs'
+
+import ReadableDate from '@components/blog/ReadableDate.astro'
+import ReadingTime from '@components/blog/ReadingTime.astro'
+
+interface Props extends HTMLAttributes<'ul'> {
+  attr: Record<string, any>
+  posts: CollectionEntry<'posts'>[]
+}
+
+const {
+  posts,
+  ...attr
+} = Astro.props as Props
+---
+
+<ul
+  {...attr}
+>
+  {
+    posts.map(({ body, data, slug }) => (
+      <li id={slug}>
+        {
+          data.image && (
+            <Image
+              src={data.image}
+              alt={data.title}
+              inferSize={true}
+              loading=""
+              style="height:auto;max-width:100%"
+            />
+          )
+        }
+        <h3><a href={hrefs.post(slug)}>{data.title}</a></h3>
+        <p>{data.description}</p>
+        <p>
+          Posted in:
+          <a
+            href={data.categorized.href}
+          >{data.categorized.name}</a>
+        </p>
+        <ReadableDate
+          date={data.pubDate}
+        />
+        &bull;
+        <ReadingTime {body} />
+        {
+          data.featured && (
+            <span>&bull;</span>
+            <small>FEATURED</small>
+          )
+        }
+        <ul>
+          {
+            data.tagged.map(({ href, name }) => (
+              <li><a href={href}>#{name}</a></li>
+            ))
+          }
+        </ul>
+      </li>
+    ))
+  }
+</ul>

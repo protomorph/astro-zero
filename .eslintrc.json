@@ -1,0 +1,29 @@
+
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+
+  "rules": {
+    "indent": [1, 2],
+    "quote-props": [1, "as-needed"],
+    "quotes": [1, "single"],
+    "semi": [1, "never"],
+    "semi-spacing": [1, {
+      "before": false,
+      "after": true
+    }],
+    "space-before-function-paren": [1, {
+      "anonymous": "always",
+      "named": "always"
+    }],
+    "space-in-parens": [1, "never"]
+  }
+}

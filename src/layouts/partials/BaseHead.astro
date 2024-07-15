@@ -1,0 +1,93 @@
+---
+import { site } from '@src/site'
+
+interface Props {
+  description?: string
+	image?: string
+  title?: string
+	type?: string
+}
+
+const {
+  description,
+  image,
+  title,
+  type = 'website',
+} = Astro.props
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+
+<script is:inline>
+document.documentElement.setAttribute('data-js','true')
+</script>
+
+<title>{title ? `${title} - ${site.name}` : site.name}</title>
+
+<meta
+  name="description"
+  content={description || site.description}
+/>
+<meta name="generator" content={Astro.generator} />
+
+<meta property="og:type" content={type} />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title || site.name} />
+<meta
+  property="og:description"
+  content={description || site.description}
+/>
+{
+  image && (
+    <meta
+      property="og:image"
+      content={new URL(image, Astro.site)}
+    />
+  )
+}
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title || site.name} />
+<meta
+  property="twitter:description"
+  content={description || site.description}
+/>
+{
+  image && (
+    <meta
+      property="twitter:image"
+      content={new URL(image, Astro.site)}
+    />
+  )
+}
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<link
+  rel="alternate"
+  title={site.name}
+  type="application/rss+xml"
+  href={new URL('rss.xml', Astro.site)}
+/>
+
+<link
+  rel="canonical"
+  href={new URL(Astro.url.pathname, Astro.site)}
+/>
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<script is:inline>
+async function copyCode (el) {
+  let t = el.textContent
+  let fig = el.closest('.code-block')
+  let code = fig.querySelector('code')
+  try {
+    await navigator.clipboard.writeText(code.textContent)
+    setTimeout(() => (el.textContent = t), 5000)
+    el.textContent = 'Copied'
+  } catch {}
+}
+</script>

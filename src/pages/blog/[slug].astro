@@ -1,0 +1,129 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+import { Image } from 'astro:assets'
+
+import { getPosts } from '@utils/posts'
+import { site } from '@src/site'
+
+import Base from '@layouts/Base.astro'
+
+import ReadableDate from '@components/blog/ReadableDate.astro'
+import ReadingTime from '@components/blog/ReadingTime.astro'
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import ShareLinks from '@components/ShareLinks.astro'
+import PostsLoop from '@components/blog/PostsLoop.astro'
+import Pager from '@components/blog/Pager.astro'
+
+export async function getStaticPaths () {
+  const { posts, related } = await getPosts()
+  const count = posts.length
+
+  return posts.map((post, index) => ({
+		params: {
+			slug: post.slug
+		},
+		props: {
+			post,
+			next: index + 1 !== count ? posts[index + 1] : null,
+			prev: index !== 0 ? posts[index - 1] : null,
+      related: related(post, site.relatedPosts),
+		},
+  }))
+}
+
+interface Props {
+  next: CollectionEntry<'posts'> | null
+  post: CollectionEntry<'posts'>
+  prev: CollectionEntry<'posts'> | null
+  related: CollectionEntry<'posts'>[] | []
+}
+
+const { post, prev, next, related } = Astro.props as Props
+const { Content } = await post.render()
+
+const {
+  categorized,
+  description,
+  image,
+  pubDate,
+  tagged = [],
+	title,
+  updateDate,
+} = post.data
+---
+
+<Base
+  {description}
+  {image}
+  {title}
+  type="article"
+>
+  <Breadcrumbs
+    page={title}
+    slot="before-content"
+  />
+
+	<article>
+    {
+      image && (
+        <Image
+          src={image}
+          alt={title}
+          inferSize={true}
+          style="height:auto;max-width:100%"
+        />
+      )
+    }
+
+    <h1>{title}</h1>
+
+    <p>{description}</p>
+
+    <p>
+      posted in:
+      <a
+        href={categorized.href}
+      >{categorized.name}</a>
+    </p>
+
+    <ReadableDate
+      date={pubDate}
+    />
+    &bull;
+    <ReadingTime
+      body={post.body}
+    />
+
+    <section><Content /></section>
+
+    <ul>
+      {
+        tagged.length > 0 ? tagged.map(
+          ({ href, name }) => (
+            <li><a href={href}>#{name}</a></li>
+          )
+        ) : (
+          <li>No tags for this post</li>
+        )
+      }
+    </ul>
+
+    <ShareLinks
+      title={title}
+      url={Astro.url}
+    />
+  </article>
+
+  {
+    related.length > 0 && (
+      <h2>Related Posts</h2>
+      <PostsLoop posts={related}/>
+    )
+  }
+
+  <Pager
+    {next}
+    {prev}
+  />
+</Base>

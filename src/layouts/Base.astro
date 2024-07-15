@@ -1,0 +1,56 @@
+---
+import { site } from '@src/site'
+
+import BaseHead from '@layouts/partials/BaseHead.astro'
+import BaseFooter from '@layouts/partials/BaseFooter.astro'
+import BaseSubscribe from '@layouts/partials/BaseSubscribe.astro'
+import BaseNavigation from '@layouts/partials/BaseNavigation.astro'
+
+interface Props {
+  description?: string
+  image?: string
+  title?: string
+	type?: string
+}
+
+const {
+  description,
+  image,
+  title,
+  type = 'website',
+} = Astro.props
+---
+
+<html data-js="false" lang={site.lang}>
+	<head>
+		<BaseHead
+      {description}
+      {image}
+      {title}
+      {type}
+    />
+	</head>
+
+	<body>
+    <BaseNavigation />
+    <slot
+      name="before-main"
+    />
+    <main
+      id="main-content"
+    >
+      <slot
+        name="before-content"
+      />
+      <slot />
+      <slot
+        name="after-content"
+      />
+    </main>
+    <slot
+      name="after-main"
+    />
+    <BaseSubscribe />
+    <BaseFooter />
+	</body>
+</html>

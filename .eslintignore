@@ -1,0 +1,9 @@
+
+.astro
+.github
+
+dist
+
+node_modules
+
+types.generated.d.ts

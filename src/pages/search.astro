@@ -1,0 +1,100 @@
+---
+import Base from '@layouts/Base.astro'
+
+import Breadcrumbs from '@components/Breadcrumbs.astro'
+import SearchForm from '@components/SearchForm.astro'
+
+const title = 'Search'
+const description = 'Search for keywords.'
+---
+
+<Base
+  {title}
+  {description}
+>
+	<Breadcrumbs
+    page={title}
+    slot="before-content"
+  />
+
+  <h1>{title}</h1>
+
+  <SearchForm
+    button={false}
+    placeholder={false}
+  />
+
+  <h2
+    id="search-results-label"
+  >Results: <span id="search-count">0</span></h2>
+
+  <ul
+    aria-labelledby="search-results-label"
+    id="search-results"
+  ></ul>
+</Base>
+
+<script>
+(async (document) => {
+  const url = new URL(window.location.href)
+  const params = new URLSearchParams(url.search)
+  const query = params.get('q')
+
+  const search = await fetch('./search.json')
+  const lookup = await search.json()
+
+  const none = document.createElement('li')
+  const count = document.querySelector('#search-count')
+  const input = document.querySelector('#search-query')
+  const output = document.querySelector('#search-results')
+
+  none.textContent = 'No Results'
+  output.append(none.cloneNode(true))
+
+  input.addEventListener('input', (event) => {
+    const results = []
+    const keyword = event.target.value.toLowerCase()
+
+    output.replaceChildren()
+    count.textContent = results.length
+
+    if (
+      keyword === '' ||
+      keyword === ' ' ||
+      keyword === '  '
+    ) return output.append(
+      none.cloneNode(true)
+    )
+
+    for (let item of lookup) {
+      if (! item.body.includes(keyword)) continue
+
+      const li = document.createElement('li')
+
+      li.innerHTML = `<a href="${item.href}">
+        <img src="${item.image}" height="auto" width="75" />
+        <span>${item.title}</span>
+        <time>${item.date}</time>
+      </a>`
+
+      output.append(li)
+      results.push(item)
+    }
+
+    count.textContent = results.length
+
+    if (results.length < 1) output.append(
+      none.cloneNode(true)
+    )
+  })
+
+  if (query) {
+    input.value = query
+    input.dispatchEvent(
+      new Event('input'), {
+        bubbles: true
+      }
+    )
+  }
+})(document)
+</script>

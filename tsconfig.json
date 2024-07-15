@@ -1,0 +1,19 @@
+
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "module": "ESNext",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@utils/*": ["src/utils/*"],
+      "@assets/*": ["src/assets/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@components/*": ["src/components/*"]
+    },
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "types": ["astro/client"]
+  },
+  "extends": "astro/tsconfigs/strict"
+}

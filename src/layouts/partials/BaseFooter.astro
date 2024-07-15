@@ -1,0 +1,13 @@
+---
+import { site } from '@src/site'
+import { isoDate, updateDate, year } from '@utils/date'
+
+const now = new Date()
+---
+
+<footer>
+  <p>&copy; {year} <a href="/">{site.name}</a></p>
+  <div>Built with <a href="https://astro.build">{Astro.generator}</a></div>
+  <small>updated: <time datetime={isoDate(now)}>{updateDate(now)}</time></small>
+  <p><a href="/rss.xml">RSS</a> | <a href="/sitemap-index.xml">Sitemap</a></p>
+</footer>

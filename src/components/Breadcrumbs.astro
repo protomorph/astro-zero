@@ -1,0 +1,84 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+import type { CategoryItem, TagItem } from '@scripts/posts'
+
+interface Props {
+  page?: CollectionEntry<'posts'> | CategoryItem | TagItem | string
+  separator: string
+}
+
+type Crumb = {
+  current: 'page' | false
+  last: boolean
+  href: string
+  text: string
+}
+
+const {
+  page,
+  separator = '&gt;'
+} = Astro.props as Props
+
+const { pathname } = new URL(Astro.request.url)
+const paths = pathname.split('/').filter(x => x) || []
+
+const crumbs = paths.map<Crumb>((path, i) => {
+  let last = paths.length - 1 === i
+  let href = `/${paths.slice(0, i + 1).join('/')}`
+  // ts-ignore
+  let text: string | false = last && (page?.data?.title || page?.name || page)
+  let current: 'page' | false = pathname === href ? 'page' : false
+
+  if (! text)
+    text = path.replace(
+      /[-_]/g, ' '
+    ).replace(
+      /\w\S*/g,
+      (t) => t.charAt(0)
+        .toUpperCase()
+        + t.substring(1)
+        .toLowerCase()
+    )
+
+  return { current, href, last, text, }
+})
+
+crumbs.unshift({
+  current: pathname === '/' ? 'page' : false,
+  href: '/',
+  last: pathname === '/',
+  text: 'Home',
+})
+---
+
+<nav
+  aria-labelledby="breadcrumbs-label"
+>
+  <h2
+    class="sr-only"
+    id="breadcrumbs-label"
+  >Breadcrumbs</h2>
+
+  <ol>
+    {
+      crumbs.map(({ current, href, last, text, }) =>
+        last ? (
+          <li
+            aria-current={current}
+          ><span>{text}</span></li>
+        ) : (
+          <li>
+            <a
+              href={href}
+            >{text}</a>
+            <span
+              role="separator"
+              set:html={separator}
+            />
+          </li>
+        )
+      )
+    }
+  </ol>
+</nav>
