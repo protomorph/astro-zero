@@ -21,7 +21,7 @@ const description = 'Search for keywords.'
 
   <SearchForm
     button={false}
-    placeholder={false}
+    placeholder={''}
   />
 
   <h2
@@ -40,23 +40,24 @@ const description = 'Search for keywords.'
   const params = new URLSearchParams(url.search)
   const query = params.get('q')
 
-  const search = await fetch('./search.json')
+  const search = await fetch('/search.json')
   const lookup = await search.json()
 
   const none = document.createElement('li')
-  const count = document.querySelector('#search-count')
-  const input = document.querySelector('#search-query')
-  const output = document.querySelector('#search-results')
+  const count = document.querySelector('#search-count') as HTMLSpanElement
+  const input = document.querySelector('#search-query') as HTMLInputElement
+  const output = document.querySelector('#search-results') as HTMLUListElement
 
   none.textContent = 'No Results'
   output.append(none.cloneNode(true))
 
   input.addEventListener('input', (event) => {
+    const target = event.target as HTMLInputElement
     const results = []
-    const keyword = event.target.value.toLowerCase()
+    const keyword = target.value.toLowerCase()
 
     output.replaceChildren()
-    count.textContent = results.length
+    count.textContent = `${results.length}`
 
     if (
       keyword === '' ||
@@ -81,7 +82,7 @@ const description = 'Search for keywords.'
       results.push(item)
     }
 
-    count.textContent = results.length
+    count.textContent = `${results.length}`
 
     if (results.length < 1) output.append(
       none.cloneNode(true)
@@ -91,9 +92,9 @@ const description = 'Search for keywords.'
   if (query) {
     input.value = query
     input.dispatchEvent(
-      new Event('input'), {
+      new Event('input', {
         bubbles: true
-      }
+      })
     )
   }
 })(document)
