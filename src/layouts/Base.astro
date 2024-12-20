@@ -2,6 +2,7 @@
 import { site } from '@src/site'
 
 import BaseHead from '@layouts/partials/BaseHead.astro'
+import Breadcrumbs from '@components/Breadcrumbs.astro'
 import BaseFooter from '@layouts/partials/BaseFooter.astro'
 import BaseSubscribe from '@layouts/partials/BaseSubscribe.astro'
 import BaseNavigation from '@layouts/partials/BaseNavigation.astro'
@@ -33,6 +34,10 @@ const {
 
 	<body>
     <BaseNavigation />
+    <slot
+      name="before-breadcrumbs"
+    />
+    <Breadcrumbs {title} />
     <slot
       name="before-main"
     />

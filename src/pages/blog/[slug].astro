@@ -10,7 +10,6 @@ import Base from '@layouts/Base.astro'
 
 import ReadableDate from '@components/blog/ReadableDate.astro'
 import ReadingTime from '@components/blog/ReadingTime.astro'
-import Breadcrumbs from '@components/Breadcrumbs.astro'
 import ShareLinks from '@components/ShareLinks.astro'
 import PostsLoop from '@components/blog/PostsLoop.astro'
 import Pager from '@components/blog/Pager.astro'
@@ -59,11 +58,6 @@ const {
   {title}
   type="article"
 >
-  <Breadcrumbs
-    page={title}
-    slot="before-content"
-  />
-
 	<article>
     {
       image && (

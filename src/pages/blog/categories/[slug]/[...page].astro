@@ -9,7 +9,6 @@ import { site } from '@src/site'
 
 import Base from '@layouts/Base.astro'
 
-import Breadcrumbs from '@components/Breadcrumbs.astro'
 import Pagination from '@components/Pagination.astro'
 import PostsLoop from '@components/blog/PostsLoop.astro'
 
@@ -48,11 +47,6 @@ const posts = page.data
   title={`Category: ${current.name}`}
   description={`All posts that are in "${current.name}"`}
 >
-  <Breadcrumbs
-    page={current}
-    slot="before-content"
-  />
-
 	<h1>Category: "{current.name}"</h1>
 
   <p>{current.count} post{current.count !== 1 && 's'} in this category</p>

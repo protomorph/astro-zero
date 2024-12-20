@@ -4,80 +4,55 @@ import type { CollectionEntry } from 'astro:content'
 import type { CategoryItem, TagItem } from '@utils/posts'
 
 interface Props {
-  page?: CollectionEntry<'posts'> | CategoryItem | TagItem | string
+  base?: string
+  title?: string
   separator?: string
 }
 
 type Crumb = {
-  current: 'page' | false
-  last: boolean
+  end: boolean
   href: string
-  text: string
+  title: string
 }
 
 const {
-  page,
-  separator = '&gt;'
+  base = 'Home',
+  separator = '&gt;',
+  title
 } = Astro.props as Props
 
-const { pathname } = new URL(Astro.request.url)
-const paths = pathname.split('/').filter(x => x) || []
+const titlecase = (txt: string) => txt.replace(
+  /\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substring(1).toLowerCase()
+)
 
-const crumbs = paths.map<Crumb>((path, i) => {
-  let last = paths.length - 1 === i
-  let href = `/${paths.slice(0, i + 1).join('/')}`
-  let text: string | false = false
-  let current: 'page' | false = pathname === href ? 'page' : false
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '')
+const paths = pathname.split('/').filter(Boolean) || []
 
-  if (! text)
-    text = path.replace(
-      /[-_]/g, ' '
-    ).replace(
-      /\w\S*/g,
-      (t) => t.charAt(0)
-        .toUpperCase()
-        + t.substring(1)
-        .toLowerCase()
-    )
+const crumbs = [base, ...paths].map((part, i) => ({
+  end: paths.length === i,
+  href: `/${paths.slice(0, i).join('/')}`,
+  title: titlecase(part.replace(/[-_]/g, ' ')),
+})) as Crumb[]
 
-  return { current, href, last, text, }
-})
+const home = crumbs.length === 1
 
-crumbs.unshift({
-  current: pathname === '/' ? 'page' : false,
-  href: '/',
-  last: pathname === '/',
-  text: 'Home',
-})
+if (Number(crumbs.at(-1)!.title)) {
+  const c = crumbs.at(-2) as Crumb
+  c.title = title as string
+} else {
+  const c = crumbs.at(-1) as Crumb
+  c.title = title as string
+}
 ---
 
-<nav
-  aria-labelledby="breadcrumbs-label"
->
-  <h2
-    class="sr-only"
-    id="breadcrumbs-label"
-  >Breadcrumbs</h2>
-
-  <ol>
-    {
-      crumbs.map(({ current, href, last, text, }) =>
-        last ? (
-          <li
-            aria-current={current}
-          ><span>{text}</span></li>
-        ) : (
-          <li>
-            <a
-              href={href}
-            >{text}</a>
-            <span
-              role="separator"
-              set:html={separator}
-            />
-          </li>
-        )
-      )
-    }
+{! home && (<nav aria-labelledby="breadcrumb-label">
+  <h2 class="sr-only" id="breadcrumb-label">Breadcrumbs</h2>
+  <ol role="list">
+    {crumbs.map(({ end, href, title }) => (
+      <li role="listitem">
+        <a {href} aria-current={end ? 'page' : undefined}>{title}</a>
+        {! end && <span role="separator" set:html={separator} />}
+      </li>
+    ))}
   </ol>
-</nav>
+</nav>)}

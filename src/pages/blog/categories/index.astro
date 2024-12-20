@@ -4,15 +4,12 @@ import { hrefs } from '@utils/hrefs'
 import Base from '@layouts/Base.astro'
 
 import CategoriesList from '@components/blog/CategoriesList.astro'
-import Breadcrumbs from '@components/Breadcrumbs.astro'
 ---
 
 <Base
   title="Categories"
   description="Categories listing directory"
 >
-  <Breadcrumbs slot="before-content" />
-
   <h1>Categories</h1>
 
   <CategoriesList title={false} />

@@ -3,7 +3,6 @@ import { hrefs } from '@utils/hrefs'
 
 import Base from '@layouts/Base.astro'
 
-import Breadcrumbs from '@components/Breadcrumbs.astro'
 import TagsList from '@components/blog/TagsList.astro'
 ---
 
@@ -11,8 +10,6 @@ import TagsList from '@components/blog/TagsList.astro'
   title="Tags"
   description="Tags listing directory"
 >
-  <Breadcrumbs slot="before-content" />
-
   <h1>Tags</h1>
 
   <TagsList title={false} />
