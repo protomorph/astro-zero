@@ -25,7 +25,7 @@
     "@astrojs/check": "^0.9.8",
     "@astrojs/mdx": "^3.1.9",
     "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/sitemap": "^3.7.2",
     "astro": "^4.16.19",
     "astro-auto-import": "^0.5.1",
     "typescript": "^5.9.3"
