@@ -28,6 +28,6 @@
     "@astrojs/sitemap": "^3.7.1",
     "astro": "^4.16.19",
     "astro-auto-import": "^0.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
