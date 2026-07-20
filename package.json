@@ -27,7 +27,7 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.1",
     "astro": "^4.16.19",
-    "astro-auto-import": "^0.5.1",
+    "astro-auto-import": "^0.5.2",
     "typescript": "^5.9.3"
   }
 }
